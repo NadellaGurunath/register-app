@@ -27,7 +27,10 @@ pipeline{
 		}
 		stage("SonarQube Analysis") {
 		    steps {
-		        withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
+		        withSonarQubeEnv(
+		            installationName: 'sonarqube-server',
+		            credentialsId: 'jenkins-sonarqube-token'
+		        ) {
 		            sh '''
 		                export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 		                export PATH=$JAVA_HOME/bin:$PATH
@@ -37,7 +40,7 @@ pipeline{
 		                mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar
 		            '''
 		        }
-	    	}
+    		}
 		}
 	}
 }
