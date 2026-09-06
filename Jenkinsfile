@@ -25,14 +25,19 @@ pipeline{
 				sh "mvn test"
 			}
 		}
-		stage("SonarQube Analasis"){
-			steps{
-				script{
-					withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token'){
-						sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar"
-					}
-				}
-			}
+		stage("SonarQube Analysis") {
+		    steps {
+		        withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
+		            sh '''
+		                export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+		                export PATH=$JAVA_HOME/bin:$PATH
+		
+		                java -version
+		
+		                mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar
+		            '''
+		        }
+	    	}
 		}
 	}
 }
